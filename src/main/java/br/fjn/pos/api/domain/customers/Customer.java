@@ -31,7 +31,7 @@ public class Customer {
 
     public Customer() {
         this.id = UUID.randomUUID().toString();
-          this.createdAt = new Date();
+        this.createdAt = new Date();
     }
 
     public String getName() {

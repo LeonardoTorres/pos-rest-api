@@ -20,7 +20,6 @@ public class CustomersService {
     private CustomersRepository customersRepository;
     
     public void create(Customer customer) throws Exception{
-        System.out.println("custo " + customersRepository);
         this.isValidCPF(customer.getCpf());
         this.customersRepository.create(customer);
     }

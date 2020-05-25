@@ -7,18 +7,18 @@ package br.fjn.pos.api.domain.customers.impl;
 
 import br.fjn.pos.api.domain.customers.Customer;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
 import br.fjn.pos.api.domain.customers.CustomersRepository;
 import java.util.ArrayList;
+import javax.enterprise.context.ApplicationScoped;
 
 /**
  *
  * @author leonardo
  */
-@RequestScoped
+@ApplicationScoped
 public class CustomersRepositoryDatabaseAsList implements CustomersRepository {
 
-    private List<Customer> customersDB = new ArrayList<>();
+    private final List<Customer> customersDB = new ArrayList<>();
 
     @Override
     public void create(Customer customer) {
