@@ -7,6 +7,7 @@ package br.fjn.pos.api.resources;
 
 import br.fjn.pos.api.domain.customers.Customer;
 import br.fjn.pos.api.domain.customers.CustomersService;
+import br.fjn.pos.api.exceptions.APIException;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -38,39 +39,55 @@ public class CustomersResource {
             this.customersService.create(customer);
             return Response.status(Response.Status.CREATED).build();
         } catch (Exception ex) {
-            return null;
+            throw new APIException(Response.Status.BAD_REQUEST.getStatusCode(), ex.getMessage());
         }
         
     }
     
     @PUT
     public Response update(Customer customer){
-       this.customersService.update(customer);
+       try{
+           this.customersService.update(customer);
+       }catch(Exception ex){
+            throw new APIException(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), ex.getMessage());
+       }
+       
        return Response.status(Response.Status.NO_CONTENT).build();
     }
     
     @DELETE
     @Path("{id}")
     public Response remove(@PathParam("id") String id){
-       this.customersService.delete(id);
+       try{
+            this.customersService.delete(id);
+       }catch (Exception ex){
+            throw new APIException(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage());
+       }       
        return Response.status(Response.Status.NO_CONTENT).build();
     }
     
-    // Path Param - /customer/id --> retorna uma cliente de acordo com um id passado
+   
     @GET
     @Path("{id}")
     public Response getById(@PathParam("id") String id){
-        Customer customer = this.customersService.findById(id);
-        if (customer == null){
-             return Response.status(Response.Status.NOT_FOUND).build();
+        try{
+            Customer customer = this.customersService.findById(id);
+            return Response.status(Response.Status.OK).entity(customer).build();
+        }catch(Exception ex){
+            throw new APIException(Response.Status.NOT_FOUND.getStatusCode(), ex.getMessage());
         }
-        return Response.status(Response.Status.OK).entity(customer).build();
+       
     }
     
-    // Path Param - /customes --> retorna todos os clientes
+ 
     @GET
     public Response getCustomers(){
-        return Response.ok().entity(this.customersService.list()).build();
+        try{
+            return Response.ok().entity(this.customersService.list()).build();
+        }catch (Exception ex){
+             throw new APIException(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), ex.getMessage());
+        }
+       
     }
     
 }
