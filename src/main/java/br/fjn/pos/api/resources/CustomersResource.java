@@ -5,6 +5,7 @@
  */
 package br.fjn.pos.api.resources;
 
+import br.fjn.pos.api.annotations.Auth;
 import br.fjn.pos.api.domain.customers.Customer;
 import br.fjn.pos.api.domain.customers.CustomersService;
 import br.fjn.pos.api.exceptions.APIException;
@@ -56,6 +57,7 @@ public class CustomersResource {
     }
     
     @DELETE
+    @Auth
     @Path("{id}")
     public Response remove(@PathParam("id") String id){
        try{
@@ -68,6 +70,7 @@ public class CustomersResource {
     
    
     @GET
+    @Auth
     @Path("{id}")
     public Response getById(@PathParam("id") String id){
         try{
@@ -81,6 +84,7 @@ public class CustomersResource {
     
  
     @GET
+    @Auth
     public Response getCustomers(){
         try{
             return Response.ok().entity(this.customersService.list()).build();
